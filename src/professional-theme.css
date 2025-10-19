@@ -1011,11 +1011,45 @@ a:hover {
   border-bottom: 1px solid rgba(0, 0, 0, 0.08);
 }
 
+:root[data-theme="futuristic"] .top-nav {
+  background: rgba(0, 0, 0, 0.9);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(20px);
+}
+
 .nav-brand {
   display: flex;
   align-items: center;
-  height: 40px;
+  height: auto;
   z-index: calc(var(--z-fixed) + 1);
+  padding: var(--space-2);
+  border-radius: var(--radius-lg);
+  transition: all var(--transition-fast);
+  background: transparent;
+  cursor: pointer;
+}
+
+.nav-brand:hover {
+  background: var(--surface-hover);
+  transform: scale(1.02);
+  box-shadow: var(--shadow-sm);
+}
+
+/* Theme-specific nav-brand styling */
+:root[data-theme="dark"] .nav-brand:hover {
+  background: rgba(255, 255, 255, 0.08);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+:root[data-theme="light"] .nav-brand:hover {
+  background: rgba(0, 0, 0, 0.05);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+:root[data-theme="futuristic"] .nav-brand:hover {
+  background: rgba(255, 255, 255, 0.08);
+  box-shadow: 0 4px 12px rgba(255, 255, 255, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .nav-actions {
@@ -1023,6 +1057,13 @@ a:hover {
   align-items: center;
   gap: var(--space-4);
   z-index: calc(var(--z-fixed) + 1);
+}
+
+/* Theme Toggle Positioning - Higher and More Right */
+.theme-toggle-positioned {
+  position: relative;
+  transform: translateY(-4px) translateX(8px);
+  margin-left: var(--space-2);
 }
 
 /* Animated Background - Enhanced */
@@ -1342,7 +1383,8 @@ a:hover {
   }
   
   .nav-brand {
-    height: 32px;
+    height: auto;
+    padding: var(--space-1);
   }
   
   .header {

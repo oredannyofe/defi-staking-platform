@@ -17,33 +17,33 @@ const BlaccMannyLogo = ({ size = 'large' }) => {
     switch (theme) {
       case 'futuristic':
         return {
-          gradient: ['#00ffff', '#0080ff', '#8000ff'], // Neon cyan to purple
-          fillGradient: ['rgba(0, 255, 255, 0.15)', 'rgba(128, 0, 255, 0.25)'],
+          gradient: ['#ffffff', '#e0e0e0', '#c0c0c0'], // White to gray
+          fillGradient: ['rgba(255, 255, 255, 0.15)', 'rgba(200, 200, 200, 0.25)'],
           diamondFill: '#ffffff',
-          letterStroke: '#00ffff',
-          textGradient: 'linear-gradient(135deg, #00ffff 0%, #ffffff 50%, #ff00ff 100%)',
-          subtitleColor: '#00ffff',
-          glowColor: '#00ffff'
+          letterStroke: '#ffffff',
+          textGradient: 'linear-gradient(135deg, #ffffff 0%, #f0f0f0 50%, #e0e0e0 100%)',
+          subtitleColor: '#ffffff',
+          glowColor: '#ffffff'
         }
       case 'dark':
         return {
-          gradient: ['#22c55e', '#059669', '#047857'],
-          fillGradient: ['rgba(34, 197, 94, 0.1)', 'rgba(5, 150, 105, 0.2)'],
+          gradient: ['#ffffff', '#e5e7eb', '#d1d5db'],
+          fillGradient: ['rgba(255, 255, 255, 0.1)', 'rgba(229, 231, 235, 0.2)'],
           diamondFill: '#ffffff',
           letterStroke: '#ffffff',
-          textGradient: 'linear-gradient(135deg, #ffffff 0%, #e5e7eb 50%, #0ea5e9 100%)',
-          subtitleColor: 'var(--text-tertiary)',
-          glowColor: '#22c55e'
+          textGradient: 'linear-gradient(135deg, #ffffff 0%, #f3f4f6 50%, #e5e7eb 100%)',
+          subtitleColor: '#d1d5db',
+          glowColor: '#ffffff'
         }
       default: // light theme
         return {
-          gradient: ['#0ea5e9', '#0284c7', '#0369a1'],
-          fillGradient: ['rgba(14, 165, 233, 0.08)', 'rgba(3, 105, 161, 0.15)'],
-          diamondFill: '#000000',
-          letterStroke: '#000000',
-          textGradient: 'linear-gradient(135deg, #000000 0%, #1f2937 30%, #0ea5e9 100%)',
-          subtitleColor: 'var(--text-tertiary)',
-          glowColor: '#0ea5e9'
+          gradient: ['#1f2937', '#374151', '#4b5563'],
+          fillGradient: ['rgba(31, 41, 55, 0.08)', 'rgba(75, 85, 99, 0.15)'],
+          diamondFill: '#ffffff',
+          letterStroke: '#1f2937',
+          textGradient: 'linear-gradient(135deg, #000000 0%, #1f2937 50%, #374151 100%)',
+          subtitleColor: '#6b7280',
+          glowColor: '#1f2937'
         }
     }
   }
@@ -103,7 +103,7 @@ const BlaccMannyLogo = ({ size = 'large' }) => {
             cx="50"
             cy="40"
             r="3"
-            fill={theme === 'futuristic' ? colors.glowColor : '#000000'}
+            fill={theme === 'futuristic' ? colors.glowColor : (theme === 'light' ? '#1f2937' : colors.glowColor)}
             className="logo-center-dot"
             style={{
               filter: theme === 'futuristic' ? `drop-shadow(0 0 2px ${colors.glowColor})` : 'none'

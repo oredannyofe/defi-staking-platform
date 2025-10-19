@@ -836,88 +836,31 @@ const AuthSystem = ({ onAuth, onLogout, user }) => {
   return (
     <div className="max-w-2xl mx-auto">
       <div className="section-header mb-8">
-        <h2 className="section-title">Welcome to DeFi Platform</h2>
+        <h2 className="section-title">Welcome to BlaccManny DeFi Platform</h2>
         <p className="section-subtitle">
-          Choose how you'd like to access your account
+          Connect your wallet for instant access to all platform features
         </p>
       </div>
 
-      {/* Authentication Options */}
-      <div className="space-y-4">
-        {/* Email Authentication */}
-        <div className="feature-card">
-          <div className="text-center">
-            <div className="feature-icon mx-auto mb-4" style={{ backgroundColor: '#3b82f620', color: '#3b82f6' }}>
-              📧
-            </div>
-            <h3 className="text-xl font-semibold mb-2">Email Authentication</h3>
-            <p className="text-secondary mb-6">
-              Sign in with email and password for full account features
-            </p>
-            
-            <div className="flex gap-3 justify-center">
-              <button
-                onClick={() => setAuthMode('email_login')}
-                className="btn-enhanced btn-primary-enhanced btn-medium"
-              >
-                🔑 Login
-              </button>
-              <button
-                onClick={() => setAuthMode('email_signup')}
-                className="btn-enhanced btn-secondary-enhanced btn-medium"
-              >
-                ✨ Sign Up
-              </button>
-            </div>
+      {/* Direct Wallet Connection */}
+      <div className="feature-card">
+        <div className="text-center">
+          <div className="feature-icon mx-auto mb-4" style={{ backgroundColor: '#f59e0b20', color: '#f59e0b' }}>
+            👛
           </div>
-        </div>
-        
-        {/* Quick Wallet-Only Access */}
-        <div className="feature-card">
-          <div className="text-center">
-            <div className="feature-icon mx-auto mb-4" style={{ backgroundColor: '#f59e0b20', color: '#f59e0b' }}>
-              👛
-            </div>
-            <h3 className="text-xl font-semibold mb-2">Wallet Authentication</h3>
-            <p className="text-secondary mb-6">
-              Connect your wallet for instant access to all platform features
-            </p>
-            
-            <button
-              onClick={() => {
-                console.log('💆 Connect Wallet button clicked!')
-                setAuthMode('signup')
-                console.log('Auth mode set to:', 'signup')
-              }}
-              className="btn-enhanced btn-primary-enhanced btn-medium"
-            >
-              🔗 Connect Wallet
-            </button>
-          </div>
+          <h3 className="text-xl font-semibold mb-2">Connect Your Wallet</h3>
+          <p className="text-secondary mb-6">
+            Choose your wallet for instant access to all platform features
+          </p>
+
+          <WalletConnector 
+            onConnect={handleWalletSignup}
+            onDisconnect={() => {}}
+            currentWallet={null}
+            account={null}
+          />
         </div>
       </div>
-
-      {/* Legacy wallet connection for quick access */}
-      {authMode === 'signup' && (
-        <div className="form-section mt-8">
-          <div className="text-center">
-            <div className="feature-icon mx-auto mb-4" style={{ backgroundColor: '#f59e0b20', color: '#f59e0b' }}>
-              🌟
-            </div>
-            <h3 className="text-xl font-semibold mb-2">Connect Your Wallet</h3>
-            <p className="text-secondary mb-6">
-              Choose your wallet to get instant access to all platform features
-            </p>
-
-            <WalletConnector 
-              onConnect={handleWalletSignup}
-              onDisconnect={() => {}}
-              currentWallet={null}
-              account={null}
-            />
-          </div>
-        </div>
-      )}
     </div>
   )
 }

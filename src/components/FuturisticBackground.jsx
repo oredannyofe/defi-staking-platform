@@ -36,7 +36,7 @@ const FuturisticBackground = () => {
           vy: (Math.random() - 0.5) * 0.5,
           vz: Math.random() * 2 + 0.5,
           size: Math.random() * 2 + 0.5,
-          color: Math.random() > 0.5 ? '#00ffff' : '#ff00ff',
+          color: Math.random() > 0.5 ? '#00ff88' : '#44ff88',
           opacity: Math.random() * 0.8 + 0.2,
           life: Math.random() * 100 + 50,
           maxLife: Math.random() * 100 + 50
@@ -135,9 +135,9 @@ const FuturisticBackground = () => {
 
         ctx.save()
         ctx.globalAlpha = drop.opacity
-        ctx.fillStyle = '#00ff41'
+        ctx.fillStyle = '#00ff00'
         ctx.font = '14px monospace'
-        ctx.shadowColor = '#00ff41'
+        ctx.shadowColor = '#00ff88'
         ctx.shadowBlur = 10
         ctx.fillText(drop.char, drop.x, drop.y)
         ctx.restore()
@@ -162,9 +162,9 @@ const FuturisticBackground = () => {
             if (distance < 120) {
               ctx.save()
               ctx.globalAlpha = (120 - distance) / 120 * 0.3
-              ctx.strokeStyle = '#8000ff'
+              ctx.strokeStyle = '#44ff88'
               ctx.lineWidth = 0.5
-              ctx.shadowColor = '#8000ff'
+              ctx.shadowColor = '#44ff88'
               ctx.shadowBlur = 3
               ctx.beginPath()
               ctx.moveTo(node.x, node.y)
@@ -178,8 +178,8 @@ const FuturisticBackground = () => {
         // Draw node
         ctx.save()
         ctx.globalAlpha = 0.8
-        ctx.fillStyle = '#ff00ff'
-        ctx.shadowColor = '#ff00ff'
+        ctx.fillStyle = '#00ff88'
+        ctx.shadowColor = '#00ff88'
         ctx.shadowBlur = 8
         ctx.beginPath()
         ctx.arc(node.x, node.y, 2, 0, Math.PI * 2)
@@ -190,9 +190,9 @@ const FuturisticBackground = () => {
       // Draw holographic grid
       ctx.save()
       ctx.globalAlpha = 0.1
-      ctx.strokeStyle = '#00ffff'
+      ctx.strokeStyle = '#00ff44'
       ctx.lineWidth = 0.5
-      ctx.shadowColor = '#00ffff'
+      ctx.shadowColor = '#00ff44'
       ctx.shadowBlur = 2
 
       // Vertical lines

@@ -15,7 +15,6 @@ import StakingPools from './components/StakingPools'
 import PortfolioManager from './components/PortfolioManager'
 import AuthSystem from './components/AuthSystem'
 import AccountManager from './components/AccountManager'
-import AdminDashboard from './components/AdminDashboard'
 import TestComponent from './components/TestComponent'
 import CryptoMarketDashboard from './components/CryptoMarketDashboard'
 import FirebaseDebug from './components/FirebaseDebug'
@@ -34,6 +33,7 @@ function App() {
   const [chainId, setChainId] = useState(null)
   const [contracts, setContracts] = useState(null)
   const [loading, setLoading] = useState(false)
+  const [authRestoring, setAuthRestoring] = useState(true) // Loading state for auth restoration
   const [activeTab, setActiveTab] = useState('market')
   const [user, setUser] = useState(null)
   const [walletType, setWalletType] = useState(null)
@@ -49,6 +49,9 @@ function App() {
     // Load contract addresses from deployment
     loadContractAddresses()
     
+    // Restore authentication state from localStorage first
+    restoreAuthenticationState()
+    
     // Check if wallet is already connected
     checkWalletConnection()
   }, [])
@@ -63,6 +66,108 @@ function App() {
     } catch (error) {
       console.log('No deployment file found, using default addresses')
     }
+  }
+
+  // Save authentication state to localStorage
+  const saveAuthenticationState = (userData) => {
+    try {
+      const stateToSave = {
+        user: userData,
+        timestamp: Date.now(),
+        walletType: userData?.walletType || walletType
+      }
+      localStorage.setItem('defi-staking-auth', JSON.stringify(stateToSave))
+      console.log('✅ Authentication state saved to localStorage')
+    } catch (error) {
+      console.error('❌ Failed to save authentication state:', error)
+    }
+  }
+
+  // Restore authentication state from localStorage
+  const restoreAuthenticationState = async () => {
+    try {
+      console.log('🔄 Checking for saved authentication state...')
+      const savedState = localStorage.getItem('defi-staking-auth')
+      if (savedState) {
+        const { user: savedUser, timestamp, walletType: savedWalletType } = JSON.parse(savedState)
+        
+        // Check if saved state is not too old (24 hours)
+        const MAX_AGE = 24 * 60 * 60 * 1000 // 24 hours in milliseconds
+        if (Date.now() - timestamp < MAX_AGE) {
+          console.log('🔄 Restoring authentication state from localStorage:', savedUser)
+          setUser(savedUser)
+          setWalletType(savedWalletType)
+          
+          // If user has wallet info, try to reconnect
+          if (savedUser?.address) {
+            console.log('🔗 Attempting to reconnect wallet...')
+            await reconnectWallet(savedUser)
+          }
+        } else {
+          console.log('⏰ Saved authentication state expired, clearing...')
+          localStorage.removeItem('defi-staking-auth')
+        }
+      } else {
+        console.log('🆆 No saved authentication state found')
+      }
+    } catch (error) {
+      console.error('❌ Failed to restore authentication state:', error)
+      localStorage.removeItem('defi-staking-auth')
+    } finally {
+      setAuthRestoring(false) // Always stop loading
+    }
+  }
+
+  // Reconnect wallet using saved user data
+  const reconnectWallet = async (userData) => {
+    if (!userData.address) return
+    
+    try {
+      // Check if wallet is still connected
+      if (typeof window.ethereum !== 'undefined') {
+        const accounts = await window.ethereum.request({
+          method: 'eth_accounts'
+        })
+        
+        if (accounts.length > 0 && accounts[0].toLowerCase() === userData.address.toLowerCase()) {
+          console.log('✅ Wallet still connected, restoring provider and signer...')
+          
+          // Recreate provider and signer
+          const web3Provider = new ethers.BrowserProvider(window.ethereum)
+          const web3Signer = await web3Provider.getSigner()
+          const network = await web3Provider.getNetwork()
+          
+          setProvider(web3Provider)
+          setSigner(web3Signer)
+          setAccount(userData.address)
+          setChainId(Number(network.chainId))
+          
+          // Load contracts
+          await loadContracts(web3Provider, web3Signer)
+          
+          console.log('✅ Wallet reconnected successfully!')
+        } else {
+          console.log('🔌 Wallet address changed or disconnected, clearing saved state')
+          clearAuthenticationState()
+        }
+      }
+    } catch (error) {
+      console.error('❌ Failed to reconnect wallet:', error)
+      clearAuthenticationState()
+    }
+  }
+
+  // Clear authentication state
+  const clearAuthenticationState = () => {
+    localStorage.removeItem('defi-staking-auth')
+    setUser(null)
+    setProvider(null)
+    setSigner(null)
+    setAccount('')
+    setChainId(null)
+    setWalletType(null)
+    setContracts(null)
+    console.log('🗑️ Authentication state cleared')
   }
 
   const checkWalletConnection = async () => {
@@ -196,7 +301,8 @@ function App() {
     console.log('Auth data authMethod:', authData.authMethod)
     
     setUser(authData)
-    console.log('✅ User state updated')
+    saveAuthenticationState(authData) // Save to localStorage
+    console.log('✅ User state updated and saved')
     
     if (authData.provider && authData.signer) {
       console.log('🔗 Setting up provider and signer...')
@@ -214,17 +320,12 @@ function App() {
   }
 
   const handleLogout = () => {
-    setUser(null)
-    disconnectWallet()
+    clearAuthenticationState() // Use the centralized clear function
+    toast.success('Logged out successfully')
   }
 
   const disconnectWallet = () => {
-    setProvider(null)
-    setSigner(null)
-    setAccount('')
-    setChainId(null)
-    setContracts(null)
-    setWalletType(null)
+    clearAuthenticationState() // Use the centralized clear function
     toast.success('Wallet disconnected')
   }
 
@@ -232,14 +333,21 @@ function App() {
   useEffect(() => {
     if (typeof window.ethereum !== 'undefined') {
       window.ethereum.on('accountsChanged', (accounts) => {
+        console.log('🔄 Accounts changed:', accounts)
         if (accounts.length === 0) {
-          disconnectWallet()
+          console.log('🔌 No accounts, clearing state')
+          clearAuthenticationState()
         } else {
-          connectWallet()
+          console.log('🔗 Account changed, attempting reconnection')
+          // Clear old state and reconnect with new account
+          clearAuthenticationState()
+          setTimeout(() => connectWallet(), 1000) // Small delay to ensure clean state
         }
       })
 
       window.ethereum.on('chainChanged', () => {
+        console.log('🔗 Chain changed, reloading page')
+        clearAuthenticationState() // Clear before reload
         window.location.reload()
       })
     }
@@ -289,11 +397,6 @@ function App() {
     </svg>
   )
 
-  const AdminIcon = () => (
-    <svg className="nav-tab-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z" />
-    </svg>
-  )
 
   return (
     <ThemeProvider>
@@ -330,7 +433,9 @@ function App() {
                 {user.walletOnly ? '✨ Create Account' : '📝 Account'}
               </button>
             )}
-            <ThemeToggle />
+            <div className="theme-toggle-positioned">
+              <ThemeToggle />
+            </div>
           </div>
         </nav>
         
@@ -343,7 +448,18 @@ function App() {
             </p>
           </header>
 
-          {(() => {
+          {authRestoring ? (
+            /* Loading screen while checking authentication */
+            <div className="auth-loading">
+              <div className="feature-card text-center">
+                <div className="loading-enhanced mx-auto mb-4" style={{width: '48px', height: '48px'}}></div>
+                <h3 className="text-xl font-semibold mb-2">🔄 Restoring Session</h3>
+                <p className="text-secondary">
+                  Checking for saved authentication state...
+                </p>
+              </div>
+            </div>
+          ) : (() => {
             console.log('🔍 Auth check - user:', user)
             console.log('🔍 Auth check - user.isAuthenticated:', user?.isAuthenticated)
             const shouldShowAuth = !user || !user.isAuthenticated
@@ -443,13 +559,6 @@ function App() {
                   Analytics
                 </button>
                 <button
-                  onClick={() => setActiveTab('admin')}
-                  className={`nav-tab ${activeTab === 'admin' ? 'active' : ''}`}
-                >
-                  <AdminIcon />
-                  Admin
-                </button>
-                <button
                   onClick={() => setActiveTab('security')}
                   className={`nav-tab ${activeTab === 'security' ? 'active' : ''}`}
                 >
@@ -466,13 +575,6 @@ function App() {
                 />
               )}
 
-              {/* Admin Dashboard */}
-              {activeTab === 'admin' && (
-                <AdminDashboard 
-                  currentUser={user}
-                  onClose={() => setActiveTab('market')}
-                />
-              )}
 
               {/* Security Education */}
               {activeTab === 'security' && (

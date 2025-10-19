@@ -48,7 +48,7 @@
   --shadow-neon-sm: 0 0 5px currentColor, 0 0 10px currentColor, 0 0 15px currentColor;
   --shadow-neon-md: 0 0 10px currentColor, 0 0 20px currentColor, 0 0 30px currentColor, 0 0 40px currentColor;
   --shadow-neon-lg: 0 0 15px currentColor, 0 0 30px currentColor, 0 0 45px currentColor, 0 0 60px currentColor;
-  --shadow-holographic: 0 8px 32px rgba(0, 255, 255, 0.3), 0 4px 16px rgba(255, 0, 255, 0.2);
+  --shadow-holographic: 0 8px 32px rgba(255, 255, 255, 0.3), 0 4px 16px rgba(200, 200, 200, 0.2);
   
   /* Transitions - Snappier for futuristic feel */
   --transition-instant: 0.1s cubic-bezier(0.25, 0.46, 0.45, 0.94);
@@ -69,15 +69,15 @@
 :root[data-theme="futuristic"] {
   color-scheme: dark;
   
-  /* Futuristic Neon Palette */
-  --neon-cyan: #00ffff;
-  --neon-magenta: #ff00ff;
-  --neon-green: #00ff41;
-  --neon-blue: #0080ff;
-  --neon-purple: #8000ff;
-  --neon-pink: #ff0080;
-  --neon-yellow: #ffff00;
-  --neon-orange: #ff8000;
+  /* Bright Green Palette */
+  --neon-cyan: #00ff88;
+  --neon-magenta: #00ff44;
+  --neon-green: #00ff00;
+  --neon-blue: #44ff88;
+  --neon-purple: #88ff44;
+  --neon-pink: #44ff00;
+  --neon-yellow: #88ff88;
+  --neon-orange: #66ff66;
   
   /* Dark Base Colors - Deep Space */
   --bg-space: #000000;
@@ -92,94 +92,95 @@
   --bg-tertiary: var(--bg-deep);
   --bg-quaternary: var(--bg-abyss);
   
-  /* Holographic Surface Colors */
-  --surface-primary: rgba(0, 255, 255, 0.03);
-  --surface-secondary: rgba(255, 0, 255, 0.04);
-  --surface-tertiary: rgba(0, 255, 65, 0.05);
-  --surface-hover: rgba(0, 128, 255, 0.08);
-  --surface-elevated: rgba(128, 0, 255, 0.1);
+  /* Surface Colors - Green Tinted */
+  --surface-primary: rgba(0, 255, 68, 0.08);
+  --surface-secondary: rgba(0, 255, 136, 0.1);
+  --surface-tertiary: rgba(68, 255, 136, 0.12);
+  --surface-hover: rgba(0, 255, 0, 0.15);
+  --surface-elevated: rgba(136, 255, 68, 0.18);
   
-  /* Neon Border Colors */
-  --border-primary: rgba(0, 255, 255, 0.2);
-  --border-secondary: rgba(255, 0, 255, 0.15);
-  --border-tertiary: rgba(0, 255, 65, 0.25);
-  --border-glow: rgba(0, 255, 255, 0.6);
+  /* Border Colors - Bright Green */
+  --border-primary: rgba(0, 255, 68, 0.4);
+  --border-secondary: rgba(0, 255, 136, 0.3);
+  --border-tertiary: rgba(68, 255, 136, 0.5);
+  --border-glow: rgba(0, 255, 0, 0.8);
   
-  /* Futuristic Text Colors - Enhanced Visibility */
-  --text-primary: #ffffff;
-  --text-secondary: #e0e0e0;
-  --text-tertiary: #00ffff;
-  --text-quaternary: #b0b0b0;
+  /* Futuristic Text Colors - Bright Green Enhanced */
+  --text-primary: #00ff88;
+  --text-secondary: #44ff88;
+  --text-tertiary: #00ff44;
+  --text-quaternary: #88ff88;
   --text-accent: var(--neon-cyan);
-  --text-neon: var(--neon-magenta);
-  --text-muted: #888888;
-  --text-bright: #f0f0f0;
+  --text-neon: #00ff00;
+  --text-muted: #66ff66;
+  --text-bright: #00ff88;
+  --text-inverse: #000000;
   
-  /* Cyberpunk Brand Colors */
-  --brand-primary: linear-gradient(135deg, #00ffff 0%, #0080ff 25%, #8000ff 50%, #ff00ff 100%);
-  --brand-secondary: linear-gradient(135deg, #00ff41 0%, #00ffff 50%, #0080ff 100%);
+  /* Bright Green Brand Colors */
+  --brand-primary: linear-gradient(135deg, #00ff88 0%, #00ff44 25%, #44ff88 50%, #88ff44 100%);
+  --brand-secondary: linear-gradient(135deg, #00ff00 0%, #44ff88 50%, #66ff66 100%);
   --brand-accent: var(--neon-cyan);
-  --brand-glow: rgba(0, 255, 255, 0.5);
+  --brand-glow: rgba(0, 255, 136, 0.7);
   
-  /* Holographic Gradients */
+  /* Bright Green Gradients */
   --gradient-holographic: linear-gradient(45deg, 
-    #ff0080 0%, #ff8000 12.5%, #ffff00 25%, 
-    #00ff41 37.5%, #00ffff 50%, #0080ff 62.5%, 
-    #8000ff 75%, #ff00ff 87.5%, #ff0080 100%);
-  --gradient-cyber: linear-gradient(135deg, #00ffff 0%, #ff00ff 100%);
-  --gradient-matrix: linear-gradient(135deg, #00ff41 0%, #008f11 100%);
-  --gradient-plasma: linear-gradient(135deg, #8000ff 0%, #ff0080 50%, #ff8000 100%);
+    #00ff88 0%, #00ff44 12.5%, #44ff88 25%, 
+    #88ff44 37.5%, #00ff00 50%, #44ff00 62.5%, 
+    #88ff88 75%, #66ff66 87.5%, #00ff88 100%);
+  --gradient-cyber: linear-gradient(135deg, #00ff88 0%, #88ff44 100%);
+  --gradient-matrix: linear-gradient(135deg, #00ff00 0%, #44ff88 100%);
+  --gradient-plasma: linear-gradient(135deg, #00ff44 0%, #88ff44 50%, #66ff66 100%);
   
-  /* Status Colors - Neon Enhanced */
-  --success-bg: rgba(0, 255, 65, 0.1);
-  --success-border: rgba(0, 255, 65, 0.3);
-  --success-text: #00ff41;
-  --success-glow: rgba(0, 255, 65, 0.5);
+  /* Status Colors - Bright Green Enhanced */
+  --success-bg: rgba(0, 255, 0, 0.15);
+  --success-border: rgba(0, 255, 68, 0.5);
+  --success-text: #00ff88;
+  --success-glow: rgba(0, 255, 136, 0.7);
   
-  --warning-bg: rgba(255, 255, 0, 0.1);
-  --warning-border: rgba(255, 255, 0, 0.3);
-  --warning-text: #ffff00;
-  --warning-glow: rgba(255, 255, 0, 0.5);
+  --warning-bg: rgba(68, 255, 136, 0.1);
+  --warning-border: rgba(68, 255, 136, 0.3);
+  --warning-text: #44ff88;
+  --warning-glow: rgba(68, 255, 136, 0.5);
   
-  --error-bg: rgba(255, 0, 128, 0.1);
-  --error-border: rgba(255, 0, 128, 0.3);
-  --error-text: #ff0080;
-  --error-glow: rgba(255, 0, 128, 0.5);
+  --error-bg: rgba(0, 255, 68, 0.1);
+  --error-border: rgba(0, 255, 68, 0.3);
+  --error-text: #00ff44;
+  --error-glow: rgba(0, 255, 68, 0.5);
   
-  --info-bg: rgba(0, 255, 255, 0.1);
-  --info-border: rgba(0, 255, 255, 0.3);
-  --info-text: #00ffff;
-  --info-glow: rgba(0, 255, 255, 0.5);
+  --info-bg: rgba(0, 255, 136, 0.1);
+  --info-border: rgba(0, 255, 136, 0.3);
+  --info-text: #00ff88;
+  --info-glow: rgba(0, 255, 136, 0.5);
   
-  /* Glass Morphism - Holographic */
-  --glass-bg: rgba(0, 255, 255, 0.05);
-  --glass-border: rgba(0, 255, 255, 0.2);
-  --glass-shadow: 0 8px 32px rgba(0, 255, 255, 0.3);
+  /* Glass Morphism - Bright Green */
+  --glass-bg: rgba(0, 255, 136, 0.05);
+  --glass-border: rgba(0, 255, 136, 0.2);
+  --glass-shadow: 0 8px 32px rgba(0, 255, 136, 0.3);
   
   /* Advanced Background Effects */
   --bg-gradient: radial-gradient(ellipse at top left, 
-    rgba(0, 255, 255, 0.05) 0%, 
-    rgba(128, 0, 255, 0.03) 25%,
+    rgba(255, 255, 255, 0.05) 0%, 
+    rgba(200, 200, 200, 0.03) 25%,
     rgba(0, 0, 0, 1) 50%,
-    rgba(255, 0, 255, 0.03) 75%,
-    rgba(0, 255, 255, 0.05) 100%);
+    rgba(180, 180, 180, 0.03) 75%,
+    rgba(255, 255, 255, 0.05) 100%);
   
   --bg-mesh: 
-    radial-gradient(circle at 20% 20%, rgba(0, 255, 255, 0.08) 0%, transparent 50%),
-    radial-gradient(circle at 80% 80%, rgba(255, 0, 255, 0.06) 0%, transparent 50%),
-    radial-gradient(circle at 40% 40%, rgba(0, 255, 65, 0.04) 0%, transparent 50%),
-    radial-gradient(circle at 60% 60%, rgba(128, 0, 255, 0.05) 0%, transparent 50%);
+    radial-gradient(circle at 20% 20%, rgba(255, 255, 255, 0.08) 0%, transparent 50%),
+    radial-gradient(circle at 80% 80%, rgba(200, 200, 200, 0.06) 0%, transparent 50%),
+    radial-gradient(circle at 40% 40%, rgba(150, 150, 150, 0.04) 0%, transparent 50%),
+    radial-gradient(circle at 60% 60%, rgba(180, 180, 180, 0.05) 0%, transparent 50%);
   
-  /* Neon Glow Effects */
-  --glow-primary: 0 0 20px rgba(0, 255, 255, 0.5), 0 0 40px rgba(0, 255, 255, 0.3), 0 0 80px rgba(0, 255, 255, 0.1);
-  --glow-secondary: 0 0 20px rgba(255, 0, 255, 0.5), 0 0 40px rgba(255, 0, 255, 0.3), 0 0 80px rgba(255, 0, 255, 0.1);
-  --glow-success: 0 0 20px rgba(0, 255, 65, 0.5), 0 0 40px rgba(0, 255, 65, 0.3), 0 0 80px rgba(0, 255, 65, 0.1);
+  /* Bright Green Glow Effects */
+  --glow-primary: 0 0 20px rgba(0, 255, 136, 0.7), 0 0 40px rgba(0, 255, 68, 0.5), 0 0 80px rgba(0, 255, 0, 0.3);
+  --glow-secondary: 0 0 20px rgba(68, 255, 136, 0.6), 0 0 40px rgba(136, 255, 68, 0.4), 0 0 80px rgba(0, 255, 44, 0.2);
+  --glow-success: 0 0 20px rgba(0, 255, 0, 0.8), 0 0 40px rgba(0, 255, 136, 0.6), 0 0 80px rgba(68, 255, 88, 0.4);
   --shadow-glow: var(--glow-primary);
   
-  /* Text Shadow for Better Readability */
-  --text-shadow-primary: 0 0 10px rgba(0, 255, 255, 0.5), 0 1px 3px rgba(0, 0, 0, 0.8);
-  --text-shadow-secondary: 0 0 8px rgba(255, 255, 255, 0.3), 0 1px 2px rgba(0, 0, 0, 0.7);
-  --text-shadow-glow: 0 0 15px currentColor, 0 1px 3px rgba(0, 0, 0, 0.9);
+  /* Text Shadow for Better Readability - Bright Green */
+  --text-shadow-primary: 0 0 12px rgba(0, 255, 136, 0.8), 0 2px 4px rgba(0, 0, 0, 0.9);
+  --text-shadow-secondary: 0 0 10px rgba(0, 255, 68, 0.6), 0 1px 3px rgba(0, 0, 0, 0.8);
+  --text-shadow-glow: 0 0 18px rgba(0, 255, 0, 0.8), 0 2px 4px rgba(0, 0, 0, 0.9);
 }
 
 /* Enhanced Text Visibility for Futuristic Theme */
@@ -230,7 +231,7 @@
   
   .form-input-enhanced, input, textarea {
     color: var(--text-primary) !important;
-    background: rgba(0, 20, 30, 0.8) !important;
+    background: rgba(20, 20, 20, 0.8) !important;
     border: 1px solid var(--border-primary) !important;
     text-shadow: none;
     font-family: var(--font-futuristic-body);
@@ -248,10 +249,10 @@
     color: var(--neon-cyan) !important;
     text-shadow: var(--text-shadow-glow);
     font-weight: 500;
-    background: rgba(0, 255, 255, 0.1);
+    background: rgba(255, 255, 255, 0.1);
     padding: 2px 6px;
     border-radius: 4px;
-    border: 1px solid rgba(0, 255, 255, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.2);
   }
   
   /* Status indicators */
@@ -275,9 +276,9 @@
   
   /* Enhanced cards and panels */
   .feature-card, .form-section, .wallet-info {
-    background: rgba(10, 10, 25, 0.9) !important;
+    background: rgba(20, 20, 20, 0.9) !important;
     border: 1px solid var(--border-primary) !important;
-    box-shadow: var(--shadow-holographic);
+    box-shadow: var(--glass-shadow);
   }
   
   /* Alert boxes with better contrast */
@@ -287,19 +288,19 @@
   }
   
   .alert-info {
-    background: rgba(0, 255, 255, 0.15) !important;
+    background: rgba(255, 255, 255, 0.15) !important;
     border-color: var(--info-border) !important;
     color: var(--text-primary) !important;
   }
   
   .alert-warning {
-    background: rgba(255, 255, 0, 0.15) !important;
+    background: rgba(200, 200, 200, 0.15) !important;
     border-color: var(--warning-border) !important;
     color: var(--text-primary) !important;
   }
   
   .alert-success {
-    background: rgba(0, 255, 65, 0.15) !important;
+    background: rgba(255, 255, 255, 0.15) !important;
     border-color: var(--success-border) !important;
     color: var(--text-primary) !important;
   }
@@ -309,16 +310,16 @@
     color: var(--neon-cyan) !important;
     text-shadow: var(--text-shadow-glow);
     border-bottom: 2px solid var(--neon-cyan) !important;
-    background: rgba(0, 255, 255, 0.1) !important;
+    background: rgba(255, 255, 255, 0.1) !important;
   }
   
   /* Button enhancements */
   .btn-primary, .btn-primary-enhanced {
-    background: linear-gradient(135deg, rgba(0, 255, 255, 0.2) 0%, rgba(0, 128, 255, 0.3) 100%) !important;
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.2) 0%, rgba(240, 240, 240, 0.3) 100%) !important;
     border: 1px solid var(--neon-cyan) !important;
-    color: var(--text-primary) !important;
-    text-shadow: var(--text-shadow-glow);
-    box-shadow: 0 0 20px rgba(0, 255, 255, 0.3);
+    color: var(--text-inverse) !important;
+    text-shadow: none;
+    box-shadow: 0 0 20px rgba(255, 255, 255, 0.3);
   }
   
   .btn-secondary, .btn-secondary-enhanced {
@@ -336,9 +337,206 @@
   }
   
   a:hover, .underline:hover {
-    color: var(--neon-magenta) !important;
-    text-shadow: 0 0 15px var(--neon-magenta);
+    color: #ffffff !important;
+    text-shadow: 0 0 15px rgba(255, 255, 255, 0.8);
   }
+  
+  /* Bright Green text visibility for maximum contrast */
+  h1, h2, h3, h4, h5, h6 {
+    color: #00ff88 !important;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 1), 0 0 12px rgba(0, 255, 136, 0.8) !important;
+    font-weight: 700 !important;
+  }
+  
+  p, span, div:not(.bg-), label, .text-sm, .text-base, .text-lg {
+    color: #44ff88 !important;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.9), 0 0 8px rgba(0, 255, 68, 0.6) !important;
+    font-weight: 500 !important;
+  }
+  
+  /* Navigation tabs */
+  .nav-tab {
+    color: #00ff88 !important;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.9), 0 0 8px rgba(0, 255, 136, 0.7) !important;
+    font-weight: 600 !important;
+  }
+  
+  .nav-tab.active {
+    color: #00ff00 !important;
+    text-shadow: 0 0 12px rgba(0, 255, 0, 1), 1px 1px 2px rgba(0, 0, 0, 0.9) !important;
+  }
+  
+  /* Main title and subtitles */
+  .main-title, .section-title {
+    color: #00ff88 !important;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 1), 0 0 15px rgba(0, 255, 136, 0.8) !important;
+    font-weight: 700 !important;
+  }
+  
+  /* Ensure buttons maintain readability */
+  .btn, button {
+    font-weight: 600 !important;
+  }
+  
+  /* Specific text elements */
+  .wallet-address {
+    color: #00ff88 !important;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.9), 0 0 8px rgba(0, 255, 136, 0.6) !important;
+    background: rgba(0, 0, 0, 0.3) !important;
+  }
+  
+  /* Override any blue/purple references to green */
+  .text-blue-500, .text-blue-600, .text-blue-700 {
+    color: #00ff88 !important;
+  }
+  
+  .text-purple-500, .text-purple-600, .text-purple-700 {
+    color: #44ff88 !important;
+  }
+  
+  .bg-blue-50, .bg-blue-900, .bg-purple-50, .bg-purple-900 {
+    background: rgba(0, 255, 68, 0.1) !important;
+  }
+  
+  .border-blue-500, .border-purple-500 {
+    border-color: #00ff88 !important;
+  }
+  
+  /* Ensure all numbers and values are visible */
+  .stat-value-large, .font-mono {
+    color: #00ff88 !important;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.9), 0 0 8px rgba(0, 255, 136, 0.6) !important;
+    font-weight: 600 !important;
+  }
+  
+  /* Tab borders and active states */
+  .nav-tab {
+    border-color: transparent !important;
+  }
+  
+  .nav-tab.active {
+    border-bottom-color: #00ff88 !important;
+    box-shadow: 0 2px 0 #00ff88 !important;
+  }
+  
+  /* Fix all container borders - no purple allowed */
+  .feature-card, .stat-card, .stat-card-enhanced, 
+  .form-section, .wallet-info, .card, 
+  div[class*="border"], div[class*="rounded"] {
+    border-color: #00ff88 !important;
+  }
+  
+  /* Ensure ALL numbers are bright green and visible */
+  .stat-value, .stat-value-large, .stat-number,
+  .price, .percentage, .volume, .market-cap,
+  .font-bold, .text-2xl, .text-3xl, .text-4xl,
+  h1, h2, h3, .main-value, .big-number {
+    color: #00ff88 !important;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 1), 0 0 12px rgba(0, 255, 136, 0.8) !important;
+    font-weight: 700 !important;
+  }
+  
+  /* Specific targeting for market data numbers */
+  [class*="market"] .stat-value,
+  [class*="volume"] .stat-value,
+  [class*="dominance"] .stat-value,
+  div:contains("$"),
+  div:contains("%") {
+    color: #00ff88 !important;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 1), 0 0 12px rgba(0, 255, 136, 0.8) !important;
+  }
+  
+  /* Force ALL text to be green - comprehensive override */
+  * {
+    color: #44ff88 !important;
+  }
+  
+  /* Strong text elements get brighter green */
+  strong, b, .font-bold, .font-semibold,
+  .text-lg, .text-xl, .text-2xl, .text-3xl, .text-4xl, .text-5xl {
+    color: #00ff88 !important;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 1), 0 0 12px rgba(0, 255, 136, 0.8) !important;
+  }
+  
+  /* Force all borders to be green */
+  * {
+    border-color: #00ff88 !important;
+  }
+  
+  /* Override any box-shadow that might be purple */
+  * {
+    box-shadow: none !important;
+  }
+  
+  .feature-card, .stat-card-enhanced {
+    box-shadow: 0 0 20px rgba(0, 255, 136, 0.3) !important;
+  }
+  
+  /* ULTRA-SPECIFIC override for the exact market statistics - ultra bright visible green */
+  .stat-card-enhanced .stat-value-large {
+    color: #39ff14 !important;
+    text-shadow: 0 0 5px rgba(57, 255, 20, 0.8), 1px 1px 2px rgba(0, 0, 0, 1) !important;
+    font-weight: 900 !important;
+    font-size: 2.5rem !important;
+    background: rgba(0, 0, 0, 0.9) !important;
+    padding: 4px 8px !important;
+    border-radius: 4px !important;
+    display: inline-block !important;
+    filter: none !important;
+    -webkit-font-smoothing: antialiased !important;
+    -moz-osx-font-smoothing: grayscale !important;
+  }
+  
+  /* Target the specific divs that contain market data - ultra bright visible green */
+  div:nth-child(1) .stat-value-large,
+  div:nth-child(2) .stat-value-large,
+  div:nth-child(3) .stat-value-large {
+    color: #39ff14 !important;
+    text-shadow: 0 0 5px rgba(57, 255, 20, 0.8), 1px 1px 2px rgba(0, 0, 0, 1) !important;
+    background: rgba(0, 0, 0, 0.9) !important;
+    padding: 6px 12px !important;
+    border-radius: 6px !important;
+    border: 2px solid #39ff14 !important;
+    filter: none !important;
+    -webkit-font-smoothing: antialiased !important;
+    -moz-osx-font-smoothing: grayscale !important;
+  }
+  
+  /* Make the main container green like the card edges */
+  .container, .max-w-7xl, 
+  .feature-card, .main-container,
+  div[class*="max-w"] {
+    border: 2px solid #00ff88 !important;
+    background: rgba(0, 0, 0, 0.8) !important;
+  }
+  
+  /* AuthSystem specific bright green styling */
+  .section-title, .section-header h2 {
+    color: #39ff14 !important;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 1), 0 0 8px rgba(57, 255, 20, 0.8) !important;
+    font-weight: 900 !important;
+  }
+  
+  .section-subtitle, .section-header p {
+    color: #44ff88 !important;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8) !important;
+    font-weight: 600 !important;
+  }
+  
+  /* Wallet connector elements */
+  .compact-wallet-connector h3,
+  .wallet-name {
+    color: #39ff14 !important;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 1) !important;
+    font-weight: 700 !important;
+  }
+  
+  /* Feature card titles */
+  .feature-card h3 {
+    color: #39ff14 !important;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 1), 0 0 8px rgba(57, 255, 20, 0.6) !important;
+  }
+  
 }
 
 /* Light Futuristic Theme Override - Clean Tech (not used when futuristic is active) */
@@ -378,7 +576,7 @@
   --text-tertiary: rgba(8, 145, 178, 0.9);
   --text-quaternary: rgba(15, 23, 42, 0.5);
   --text-accent: var(--tech-cyan);
-  --text-neon: var(--tech-purple);
+  --text-neon: var(--tech-cyan);
   
   /* Clean Tech Brand Colors */
   --brand-primary: linear-gradient(135deg, #0891b2 0%, #3b82f6 50%, #8b5cf6 100%);
@@ -638,7 +836,7 @@ code, .font-mono {
   left: -50%;
   width: 200%;
   height: 200%;
-  background: radial-gradient(circle, rgba(0, 255, 255, 0.03) 0%, transparent 70%);
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.03) 0%, transparent 70%);
   opacity: 0;
   transition: opacity var(--transition-normal);
   pointer-events: none;
@@ -709,7 +907,7 @@ code, .font-mono {
   left: -100%;
   width: 100%;
   height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(0, 255, 255, 0.1), transparent);
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
   transition: left var(--transition-fast);
 }
 
@@ -792,7 +990,7 @@ code, .font-mono {
 
 .btn-primary:hover:not(:disabled) {
   transform: translateY(-3px) scale(1.05);
-  box-shadow: var(--glow-primary), 0 10px 30px rgba(0, 255, 255, 0.3);
+  box-shadow: var(--glow-primary), 0 10px 30px rgba(255, 255, 255, 0.3);
 }
 
 .btn-secondary {
@@ -817,7 +1015,7 @@ code, .font-mono {
 }
 
 .btn-warning {
-  background: linear-gradient(135deg, #ffff00 0%, #ff8000 100%);
+  background: linear-gradient(135deg, #f0f0f0 0%, #d0d0d0 100%);
   color: #000000;
   box-shadow: var(--warning-glow);
   border: 1px solid var(--warning-border);
@@ -825,8 +1023,8 @@ code, .font-mono {
 }
 
 .btn-error {
-  background: linear-gradient(135deg, #ff0080 0%, #ff004d 100%);
-  color: #ffffff;
+  background: linear-gradient(135deg, #c0c0c0 0%, #a0a0a0 100%);
+  color: #000000;
   box-shadow: var(--error-glow);
   border: 1px solid var(--error-border);
 }
@@ -864,7 +1062,7 @@ code, .font-mono {
 .form-input:focus {
   outline: none;
   border-color: var(--border-glow);
-  box-shadow: var(--glow-primary), 0 0 0 3px rgba(0, 255, 255, 0.1);
+  box-shadow: var(--glow-primary), 0 0 0 3px rgba(255, 255, 255, 0.1);
   background: var(--surface-secondary);
   text-shadow: var(--glow-primary);
 }
@@ -1100,7 +1298,7 @@ code, .font-mono {
     border-top-color: var(--neon-cyan);
   }
   25% {
-    border-top-color: var(--neon-magenta);
+    border-top-color: #e0e0e0;
   }
   50% {
     transform: rotate(180deg);
@@ -1161,7 +1359,7 @@ code, .font-mono {
 .theme-toggle:hover {
   background: var(--surface-hover);
   border-color: var(--border-glow);
-  box-shadow: var(--glow-primary), 0 0 20px rgba(0, 255, 255, 0.4);
+  box-shadow: var(--glow-primary), 0 0 20px rgba(255, 255, 255, 0.4);
   transform: scale(1.1);
 }
 

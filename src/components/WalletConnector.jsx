@@ -40,89 +40,35 @@ const WalletConnector = ({ onConnect, onDisconnect, currentWallet, account }) =>
     return false
   }
 
-  // Wallet configurations
+  // Essential wallets only - compact configuration
   const wallets = [
     {
       id: 'metamask',
       name: 'MetaMask',
       icon: '🦊',
       color: '#f6851b',
-      popular: true,
-      downloadUrl: 'https://metamask.io/',
       detect: detectMetaMask
     },
     {
-      id: 'binance',
-      name: 'Binance Wallet',
-      icon: '🟡',
-      color: '#f3ba2f',
-      popular: true,
-      downloadUrl: 'https://www.binance.org/en/binance-wallet',
-      detect: () => typeof window.BinanceChain !== 'undefined'
-    },
-    {
       id: 'trust',
-      name: 'Trust Wallet',
+      name: 'Trust Wallet', 
       icon: '🛡️',
       color: '#3375bb',
-      popular: true,
-      downloadUrl: 'https://trustwallet.com/',
       detect: () => typeof window.ethereum !== 'undefined' && window.ethereum.isTrust
     },
     {
       id: 'coinbase',
-      name: 'Coinbase Wallet',
-      icon: '🔵',
+      name: 'Coinbase',
+      icon: '🔵', 
       color: '#0052ff',
-      popular: true,
-      downloadUrl: 'https://wallet.coinbase.com/',
       detect: () => typeof window.ethereum !== 'undefined' && window.ethereum.isCoinbaseWallet
-    },
-    {
-      id: 'mobile-metamask',
-      name: 'MetaMask Mobile',
-      icon: '📱',
-      color: '#f6851b',
-      popular: isMobile(),
-      downloadUrl: 'https://metamask.io/download/',
-      detect: () => isMobile() && !detectMetaMask(),
-      mobileOnly: true
     },
     {
       id: 'walletconnect',
       name: 'WalletConnect',
       icon: '🔗',
-      color: '#3b99fc',
-      popular: false,
-      downloadUrl: 'https://walletconnect.com/',
-      detect: () => true // Always available as it's a protocol
-    },
-    {
-      id: 'phantom',
-      name: 'Phantom',
-      icon: '👻',
-      color: '#ab9ff2',
-      popular: false,
-      downloadUrl: 'https://phantom.app/',
-      detect: () => typeof window.solana !== 'undefined' && window.solana.isPhantom
-    },
-    {
-      id: 'brave',
-      name: 'Brave Wallet',
-      icon: '🦁',
-      color: '#fb542b',
-      popular: false,
-      downloadUrl: 'https://brave.com/wallet/',
-      detect: () => typeof window.ethereum !== 'undefined' && window.ethereum.isBraveWallet
-    },
-    {
-      id: 'rainbow',
-      name: 'Rainbow',
-      icon: '🌈',
-      color: '#ff6b4a',
-      popular: false,
-      downloadUrl: 'https://rainbow.me/',
-      detect: () => typeof window.ethereum !== 'undefined' && window.ethereum.isRainbow
+      color: '#3b99fc', 
+      detect: () => true
     }
   ]
 
@@ -266,39 +212,6 @@ const WalletConnector = ({ onConnect, onDisconnect, currentWallet, account }) =>
     window.open(wallet.downloadUrl, '_blank', 'noopener,noreferrer')
   }
 
-  // Mobile instructions component
-  const MobileInstructions = () => {
-    if (!isMobile()) return null
-    
-    return (
-      <div className="feature-card mb-6" style={{
-        background: 'linear-gradient(135deg, #3b82f608 0%, #10b98108 100%)',
-        border: '2px solid #3b82f615'
-      }}>
-        <div className="flex items-center gap-3 mb-4">
-          <div className="text-2xl">📱</div>
-          <h4 className="font-semibold text-primary">Mobile Wallet Connection</h4>
-        </div>
-        <div className="space-y-3 text-sm text-secondary">
-          <div className="flex items-start gap-2">
-            <span className="text-blue-500 font-bold">1.</span>
-            <span>If you have MetaMask mobile installed, it should be detected automatically</span>
-          </div>
-          <div className="flex items-start gap-2">
-            <span className="text-blue-500 font-bold">2.</span>
-            <span>If not detected, try refreshing this page after opening it in your wallet's browser</span>
-          </div>
-          <div className="flex items-start gap-2">
-            <span className="text-blue-500 font-bold">3.</span>
-            <span>Alternatively, copy this URL and paste it in your wallet's DApp browser</span>
-          </div>
-        </div>
-        <div className="mt-4 p-2 bg-gray-800 rounded text-xs font-mono text-green-400 break-all">
-          {window.location.href}
-        </div>
-      </div>
-    )
-  }
 
   if (currentWallet && account) {
 
@@ -334,532 +247,144 @@ const WalletConnector = ({ onConnect, onDisconnect, currentWallet, account }) =>
     )
   }
 
-  const popularWallets = wallets.filter(w => w.popular)
-  const otherWallets = wallets.filter(w => !w.popular)
-
   return (
-    <>
-    <div className="wallet-connector-container">
-      <div className="section-header mb-8">
-        <h2 className="section-title mobile-section-title">Connect Your Wallet</h2>
-        <p className="section-subtitle mobile-section-subtitle">
-          Choose from our supported wallets to connect to the DeFi platform
-        </p>
+    <div className="compact-wallet-connector">
+      <div className="text-center mb-6">
+        <h3 className="text-lg font-semibold mb-2">Choose Wallet</h3>
       </div>
       
-      <MobileInstructions />
-
-      {/* Popular Wallets */}
-      <div className="mb-8">
-        <h3 className="text-xl font-semibold mb-6 text-gradient-primary text-center mobile-wallet-title">🔥 Popular Wallets</h3>
-        <div className="mobile-wallet-grid">
-          {popularWallets.map(wallet => {
-            const isInstalled = installedWallets[wallet.id]
-            const isConnecting = connecting === wallet.id
-
-            return (
-              <div 
-                key={wallet.id} 
-                className="feature-card hover:scale-[1.02] transition-all duration-200 border-2 hover:border-opacity-50"
-                style={{ 
-                  borderColor: isInstalled ? wallet.color + '40' : 'transparent',
-                  boxShadow: isInstalled ? `0 4px 20px ${wallet.color}15` : 'var(--shadow-xl)'
-                }}
-              >
-                {/* Header with Icon and Wallet Info */}
-                <div className="flex items-center gap-4 mb-6">
-                  <div 
-                    className="flex-shrink-0 w-16 h-16 rounded-xl flex items-center justify-center transition-all duration-200 hover:scale-110"
-                    style={{ 
-                      backgroundColor: wallet.color + '15', 
-                      color: wallet.color,
-                      border: `2px solid ${wallet.color}25`
-                    }}
-                  >
-                    <span className="text-3xl">{wallet.icon}</span>
-                  </div>
-                  <div className="flex-1 min-w-0">
-                    <h3 className="text-lg font-bold mb-1 text-primary truncate">{wallet.name}</h3>
-                    <div className="flex items-center gap-2 mb-1">
-                      {isInstalled ? (
-                        <span 
-                          className="inline-flex items-center gap-1 text-xs font-medium px-2.5 py-1 rounded-full"
-                          style={{ 
-                            backgroundColor: '#10b98115', 
-                            color: '#10b981',
-                            border: '1px solid #10b98130'
-                          }}
-                        >
-                          <span className="text-xs">✅</span> Ready
-                        </span>
-                      ) : (
-                        <span 
-                          className="inline-flex items-center gap-1 text-xs font-medium px-2.5 py-1 rounded-full"
-                          style={{ 
-                            backgroundColor: '#f59e0b15', 
-                            color: '#f59e0b',
-                            border: '1px solid #f59e0b30'
-                          }}
-                        >
-                          <span className="text-xs">📥</span> Install Required
-                        </span>
-                      )}
-                    </div>
-                    <p className="text-xs text-secondary opacity-75">
-                      {isInstalled ? 'Click connect to proceed' : 'Install wallet to continue'}
-                    </p>
-                  </div>
-                </div>
-
-                {/* Action Button */}
-                <div className="mt-auto">
-                  {isInstalled ? (
-                    <button
-                      onClick={() => {
-                        console.log(`🔗 Connecting to ${wallet.name}...`)
-                        connectWallet(wallet.id)
-                      }}
-                      disabled={isConnecting}
-                      className="w-full py-3 px-4 rounded-lg font-semibold text-sm transition-all duration-200 flex items-center justify-center gap-2 hover:scale-[1.02]"
-                      style={{
-                        backgroundColor: isConnecting ? '#6b7280' : wallet.color,
-                        color: 'white',
-                        boxShadow: isConnecting ? 'none' : `0 2px 10px ${wallet.color}30`
-                      }}
-                    >
-                      {isConnecting ? (
-                        <>
-                          <div className="loading-enhanced w-4 h-4"></div>
-                          <span>Connecting...</span>
-                        </>
-                      ) : (
-                        <>
-                          <span>🚀</span>
-                          <span>Connect {wallet.name}</span>
-                        </>
-                      )}
-                    </button>
-                  ) : (
-                    <button
-                      onClick={() => {
-                        console.log(`📥 Installing ${wallet.name}...`)
-                        openWalletDownload(wallet)
-                      }}
-                      className="w-full py-3 px-4 rounded-lg font-semibold text-sm transition-all duration-200 flex items-center justify-center gap-2 hover:scale-[1.02]"
-                      style={{
-                        backgroundColor: 'var(--color-secondary)',
-                        color: 'var(--text-primary)',
-                        border: `2px solid ${wallet.color}30`
-                      }}
-                    >
-                      <span>📥</span>
-                      <span>Install {wallet.name}</span>
-                    </button>
-                  )}
-                </div>
+      <div className="wallet-grid">
+        {wallets.map(wallet => {
+          const isInstalled = installedWallets[wallet.id]
+          const isConnecting = connecting === wallet.id
+          
+          return (
+            <button
+              key={wallet.id}
+              onClick={() => {
+                if (isInstalled) {
+                  connectWallet(wallet.id)
+                } else {
+                  window.open(
+                    wallet.id === 'metamask' ? 'https://metamask.io/download/' :
+                    wallet.id === 'trust' ? 'https://trustwallet.com/' :
+                    wallet.id === 'coinbase' ? 'https://wallet.coinbase.com/' :
+                    'https://walletconnect.com/', 
+                    '_blank'
+                  )
+                }
+              }}
+              disabled={isConnecting}
+              className="wallet-card"
+              style={{
+                backgroundColor: isInstalled ? wallet.color + '10' : 'var(--surface-primary)',
+                border: `2px solid ${isInstalled ? wallet.color + '40' : 'var(--border-primary)'}`,
+                opacity: isConnecting ? 0.7 : 1
+              }}
+            >
+              <div className="wallet-icon" style={{ color: wallet.color }}>
+                {wallet.icon}
               </div>
-            )
-          })}
-        </div>
+              <div className="wallet-name">{wallet.name}</div>
+              {isConnecting && <div className="loading-enhanced"></div>}
+              {!isInstalled && <div className="install-badge">Install</div>}
+            </button>
+          )
+        })}
       </div>
-
-      {/* Other Wallets */}
-      <div className="mb-10">
-        <h3 className="text-lg font-semibold mb-6 text-gradient-secondary text-center">✨ Additional Wallets</h3>
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-5xl mx-auto">
-          {otherWallets.map(wallet => {
-            const isInstalled = installedWallets[wallet.id]
-            const isConnecting = connecting === wallet.id
-
-            return (
-              <div 
-                key={wallet.id} 
-                className="feature-card text-center hover:scale-[1.03] transition-all duration-200 min-h-[160px] flex flex-col"
-                style={{
-                  borderColor: isInstalled ? wallet.color + '30' : 'transparent',
-                  background: isInstalled 
-                    ? `linear-gradient(135deg, ${wallet.color}05 0%, transparent 50%)` 
-                    : 'var(--glass-bg)'
-                }}
-              >
-                {/* Wallet Icon */}
-                <div className="flex-1 flex flex-col items-center justify-center py-4">
-                  <div 
-                    className="w-12 h-12 rounded-lg flex items-center justify-center mb-3 transition-all duration-200 hover:scale-110"
-                    style={{ 
-                      backgroundColor: wallet.color + '15', 
-                      color: wallet.color,
-                      border: `1px solid ${wallet.color}25`
-                    }}
-                  >
-                    <span className="text-xl">{wallet.icon}</span>
-                  </div>
-                  
-                  <h4 className="font-semibold text-sm mb-1 text-primary">{wallet.name}</h4>
-                  
-                  <div className="mb-3">
-                    {isInstalled ? (
-                      <span 
-                        className="inline-flex items-center gap-1 text-xs px-2 py-0.5 rounded-full"
-                        style={{ 
-                          backgroundColor: '#10b98110', 
-                          color: '#10b981'
-                        }}
-                      >
-                        <span className="text-xs">✅</span> Ready
-                      </span>
-                    ) : (
-                      <span 
-                        className="inline-flex items-center gap-1 text-xs px-2 py-0.5 rounded-full"
-                        style={{ 
-                          backgroundColor: '#f59e0b10', 
-                          color: '#f59e0b'
-                        }}
-                      >
-                        <span className="text-xs">📥</span> Install
-                      </span>
-                    )}
-                  </div>
-                </div>
-                
-                {/* Action Button */}
-                <div className="p-2 pt-0">
-                  {isInstalled ? (
-                    <button
-                      onClick={() => {
-                        console.log(`🔗 Connecting to ${wallet.name}...`)
-                        connectWallet(wallet.id)
-                      }}
-                      disabled={isConnecting}
-                      className="w-full py-2 px-3 rounded-md text-xs font-medium transition-all duration-200 flex items-center justify-center gap-1.5"
-                      style={{
-                        backgroundColor: isConnecting ? '#6b7280' : wallet.color,
-                        color: 'white',
-                        boxShadow: isConnecting ? 'none' : `0 2px 8px ${wallet.color}25`
-                      }}
-                    >
-                      {isConnecting ? (
-                        <>
-                          <div className="loading-enhanced w-3 h-3"></div>
-                          <span>Connecting...</span>
-                        </>
-                      ) : (
-                        <>
-                          <span>🚀</span>
-                          <span>Connect</span>
-                        </>
-                      )}
-                    </button>
-                  ) : (
-                    <button
-                      onClick={() => {
-                        console.log(`📥 Installing ${wallet.name}...`)
-                        openWalletDownload(wallet)
-                      }}
-                      className="w-full py-2 px-3 rounded-md text-xs font-medium transition-all duration-200 flex items-center justify-center gap-1.5 hover:scale-[1.02]"
-                      style={{
-                        backgroundColor: 'var(--color-secondary)',
-                        color: 'var(--text-secondary)',
-                        border: `1px solid ${wallet.color}20`
-                      }}
-                    >
-                      <span>📥</span>
-                      <span>Install</span>
-                    </button>
-                  )}
-                </div>
-              </div>
-            )
-          })}
-        </div>
-      </div>
-
-      {/* Security Features */}
-      <div className="mb-8">
-        <h3 className="text-lg font-semibold mb-6 text-center text-primary">🛡️ Why Choose Our Platform</h3>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 max-w-4xl mx-auto">
-          <div className="feature-card text-center hover:scale-[1.02] transition-all duration-200">
-            <div 
-              className="w-12 h-12 rounded-xl flex items-center justify-center mx-auto mb-4 transition-all duration-200"
-              style={{ 
-                backgroundColor: '#10b98115', 
-                color: '#10b981',
-                border: '2px solid #10b98125'
-              }}
-            >
-              <span className="text-2xl">🔒</span>
-            </div>
-            <h4 className="font-bold mb-2 text-primary">Bank-Level Security</h4>
-            <p className="text-sm text-secondary leading-relaxed">
-              Your wallet data is encrypted with military-grade security and never stored on our servers
-            </p>
-          </div>
-          
-          <div className="feature-card text-center hover:scale-[1.02] transition-all duration-200">
-            <div 
-              className="w-12 h-12 rounded-xl flex items-center justify-center mx-auto mb-4 transition-all duration-200"
-              style={{ 
-                backgroundColor: '#3b82f615', 
-                color: '#3b82f6',
-                border: '2px solid #3b82f625'
-              }}
-            >
-              <span className="text-2xl">⚡</span>
-            </div>
-            <h4 className="font-bold mb-2 text-primary">Lightning Fast</h4>
-            <p className="text-sm text-secondary leading-relaxed">
-              Connect instantly with optimized protocols and start accessing features in seconds
-            </p>
-          </div>
-          
-          <div className="feature-card text-center hover:scale-[1.02] transition-all duration-200">
-            <div 
-              className="w-12 h-12 rounded-xl flex items-center justify-center mx-auto mb-4 transition-all duration-200"
-              style={{ 
-                backgroundColor: '#f59e0b15', 
-                color: '#f59e0b',
-                border: '2px solid #f59e0b25'
-              }}
-            >
-              <span className="text-2xl">🌐</span>
-            </div>
-            <h4 className="font-bold mb-2 text-primary">Multi-Chain Support</h4>
-            <p className="text-sm text-secondary leading-relaxed">
-              Compatible with Ethereum, BSC, Polygon, and 20+ other popular blockchain networks
-            </p>
-          </div>
-        </div>
-      </div>
-
-      {/* Help Section */}
-      <div 
-        className="feature-card text-center max-w-2xl mx-auto"
-        style={{
-          background: 'linear-gradient(135deg, #3b82f608 0%, #10b98108 100%)',
-          border: '2px solid #3b82f615'
-        }}
-      >
-        <div className="flex items-center justify-center gap-3 mb-4">
-          <div 
-            className="w-10 h-10 rounded-lg flex items-center justify-center"
-            style={{ 
-              backgroundColor: '#3b82f615', 
-              color: '#3b82f6'
-            }}
-          >
-            <span className="text-xl">🎓</span>
-          </div>
-          <h4 className="text-lg font-bold text-primary">New to Web3?</h4>
-        </div>
-        
-        <p className="text-sm text-secondary mb-6 leading-relaxed">
-          New to crypto wallets? Don’t worry! Check out our comprehensive beginner’s guide 
-          to learn how to set up and use your first wallet safely and securely.
-        </p>
-        
-        <div className="flex gap-3 justify-center">
-          <button 
-            className="px-4 py-2 rounded-lg font-semibold text-sm transition-all duration-200 hover:scale-[1.02] flex items-center gap-2"
-            style={{
-              backgroundColor: '#3b82f6',
-              color: 'white',
-              boxShadow: '0 2px 10px #3b82f630'
-            }}
-          >
-            <span>📚</span>
-            <span>Learn More</span>
-          </button>
-          
-          <button 
-            className="px-4 py-2 rounded-lg font-semibold text-sm transition-all duration-200 hover:scale-[1.02] flex items-center gap-2"
-            style={{
-              backgroundColor: 'var(--color-secondary)',
-              color: 'var(--text-primary)',
-              border: '2px solid #3b82f620'
-            }}
-          >
-            <span>📹</span>
-            <span>Watch Tutorial</span>
-          </button>
-        </div>
-      </div>
-    </div>
-    
-    <style jsx>{`
-      /* Mobile-specific styles */
-      .wallet-connector-container {
-        max-width: 1024px;
-        margin: 0 auto;
-        padding: 0 var(--space-4);
-      }
       
-      .mobile-wallet-grid {
-        display: grid;
-        grid-template-columns: 1fr;
-        gap: var(--space-4);
-        max-width: 600px;
-        margin: 0 auto;
-      }
-      
-      @media (min-width: 640px) {
-        .mobile-wallet-grid {
-          grid-template-columns: 1fr;
-          max-width: 500px;
+      <style jsx>{`
+        .compact-wallet-connector {
+          max-width: 400px;
+          margin: 0 auto;
+          padding: var(--space-4);
         }
-      }
-      
-      @media (min-width: 768px) {
-        .mobile-wallet-grid {
+        
+        .wallet-grid {
+          display: grid;
           grid-template-columns: repeat(2, 1fr);
-          gap: var(--space-6);
-          max-width: 800px;
-        }
-      }
-      
-      @media (max-width: 768px) {
-        .wallet-connector-container {
-          padding: 0 var(--space-3);
+          gap: var(--space-3);
         }
         
-        .mobile-section-title {
-          font-size: 1.75rem !important;
-          margin-bottom: var(--space-3);
-        }
-        
-        .mobile-section-subtitle {
-          font-size: 0.875rem !important;
-          line-height: 1.6;
-          margin-bottom: var(--space-6);
-        }
-        
-        .mobile-wallet-title {
-          font-size: 1.125rem !important;
-          margin-bottom: var(--space-4) !important;
-        }
-        
-        .feature-card {
-          padding: var(--space-4) !important;
-          margin-bottom: var(--space-4);
-          border-radius: var(--radius-xl);
-        }
-        
-        .feature-card button {
-          min-height: 48px !important;
-          padding: var(--space-3) var(--space-4) !important;
-          font-size: 0.875rem !important;
+        .wallet-card {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: center;
+          padding: var(--space-4);
           border-radius: var(--radius-lg);
+          transition: all 0.2s ease;
+          position: relative;
+          min-height: 100px;
+          cursor: pointer;
+        }
+        
+        .wallet-card:hover {
+          transform: translateY(-2px);
+          box-shadow: var(--glow-primary);
+        }
+        
+        .wallet-card:active {
+          transform: translateY(0);
+        }
+        
+        .wallet-icon {
+          font-size: 2rem;
+          margin-bottom: var(--space-2);
+        }
+        
+        .wallet-name {
+          font-size: 0.875rem;
+          font-weight: 600;
+          color: var(--text-primary);
+          text-align: center;
+        }
+        
+        .install-badge {
+          position: absolute;
+          top: 8px;
+          right: 8px;
+          background: var(--warning-bg);
+          color: var(--warning-text);
+          font-size: 0.6875rem;
+          padding: 2px 6px;
+          border-radius: 10px;
           font-weight: 600;
         }
         
-        .feature-card .w-16 {
-          width: 56px !important;
-          height: 56px !important;
+        .loading-enhanced {
+          position: absolute;
+          top: 8px;
+          left: 8px;
+          width: 16px;
+          height: 16px;
         }
         
-        .feature-card .text-3xl {
-          font-size: 1.75rem !important;
+        @media (max-width: 480px) {
+          .compact-wallet-connector {
+            padding: var(--space-3);
+          }
+          
+          .wallet-grid {
+            gap: var(--space-2);
+          }
+          
+          .wallet-card {
+            padding: var(--space-3);
+            min-height: 90px;
+          }
+          
+          .wallet-icon {
+            font-size: 1.75rem;
+            margin-bottom: var(--space-1);
+          }
+          
+          .wallet-name {
+            font-size: 0.8125rem;
+          }
         }
-        
-        .feature-card .text-lg {
-          font-size: 1rem !important;
-        }
-        
-        .feature-card .text-xs {
-          font-size: 0.75rem !important;
-        }
-        
-        .grid.grid-cols-2.md\\:grid-cols-4 {
-          grid-template-columns: repeat(2, 1fr) !important;
-          gap: var(--space-3) !important;
-        }
-        
-        .grid.grid-cols-1.md\\:grid-cols-3 {
-          grid-template-columns: 1fr !important;
-          gap: var(--space-4) !important;
-        }
-        
-        .feature-card.max-w-2xl {
-          max-width: none !important;
-        }
-        
-        .feature-card .flex.gap-3 {
-          flex-direction: column !important;
-          gap: var(--space-3) !important;
-        }
-        
-        .feature-card .flex.gap-3 button {
-          width: 100% !important;
-        }
-        
-        .inline-flex.items-center.gap-1 {
-          padding: var(--space-1) var(--space-2) !important;
-          font-size: 0.6875rem !important;
-        }
-      }
-      
-      @media (max-width: 480px) {
-        .wallet-connector-container {
-          padding: 0 var(--space-2);
-        }
-        
-        .mobile-section-title {
-          font-size: 1.5rem !important;
-        }
-        
-        .mobile-section-subtitle {
-          font-size: 0.75rem !important;
-        }
-        
-        .feature-card {
-          padding: var(--space-3) !important;
-        }
-        
-        .feature-card .flex.items-center.gap-4 {
-          flex-direction: column !important;
-          text-align: center !important;
-          gap: var(--space-3) !important;
-        }
-        
-        .feature-card .flex-1.min-w-0 {
-          min-width: auto !important;
-          width: 100% !important;
-        }
-        
-        .grid.grid-cols-2.md\\:grid-cols-4 {
-          grid-template-columns: 1fr !important;
-        }
-        
-        .feature-card.min-h-\\[160px\\] {
-          min-height: auto !important;
-          padding: var(--space-3) !important;
-        }
-      }
-      
-      @media (hover: none) and (pointer: coarse) {
-        .feature-card button {
-          min-height: 48px !important;
-          padding: var(--space-3) var(--space-4) !important;
-        }
-        
-        .feature-card:hover {
-          transform: none !important;
-        }
-        
-        .feature-card .hover\\:scale-110:hover {
-          transform: none !important;
-        }
-        
-        .feature-card .hover\\:scale-\\[1\\.02\\]:hover {
-          transform: none !important;
-        }
-        
-        .feature-card button:active {
-          transform: scale(0.98);
-          transition: transform 0.1s ease;
-        }
-      }
-    `}</style>
-    </>
+      `}</style>
+    </div>
   )
 }
 
