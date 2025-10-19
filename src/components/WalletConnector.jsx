@@ -2,6 +2,21 @@ import React, { useState, useEffect } from 'react'
 import { ethers } from 'ethers'
 import { toast } from 'react-hot-toast'
 
+// SVG Wallet Logo Components
+const TrustWalletIcon = ({ size = 32 }) => (
+  <svg width={size} height={size} viewBox="0 0 32 32" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+    <path d="M16 2L4 8v8c0 7.732 5.943 12.2 12 14 6.057-1.8 12-6.268 12-14V8L16 2z" fill="#3375bb"/>
+    <path d="M16 6L8 10v6c0 4.97 3.83 7.84 8 9 4.17-1.16 8-4.03 8-9v-6L16 6z" fill="white"/>
+  </svg>
+)
+
+const CoinbaseIcon = ({ size = 32 }) => (
+  <svg width={size} height={size} viewBox="0 0 32 32" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+    <circle cx="16" cy="16" r="16" fill="#0052ff"/>
+    <path d="M16 24c-4.411 0-8-3.589-8-8s3.589-8 8-8c2.52 0 4.77 1.17 6.24 3h-3.03C18.38 10.39 17.25 10 16 10c-3.309 0-6 2.691-6 6s2.691 6 6 6c1.25 0 2.38-0.39 3.21-1h3.03C20.77 22.83 18.52 24 16 24z" fill="white"/>
+  </svg>
+)
+
 const WalletConnector = ({ onConnect, onDisconnect, currentWallet, account }) => {
   const [connecting, setConnecting] = useState(null)
   const [installedWallets, setInstalledWallets] = useState({})
@@ -28,45 +43,65 @@ const WalletConnector = ({ onConnect, onDisconnect, currentWallet, account }) =>
     if (isMobile() && typeof window.ethereum !== 'undefined') {
       // Additional checks for MetaMask mobile
       if (window.ethereum._metamask || 
-          window.ethereum.selectedAddress || 
+          window.ethereum.selectedAddress !== undefined || 
           (window.ethereum.providers && window.ethereum.providers.find(p => p.isMetaMask))) {
         return true
       }
       
-      // Generic ethereum provider on mobile - could be MetaMask
-      return true
+      // Check if ethereum provider exists and we can request accounts (likely MetaMask)
+      try {
+        if (window.ethereum.request) {
+          return true
+        }
+      } catch (e) {
+        // Silent fail
+      }
     }
     
     return false
   }
 
-  // Essential wallets only - compact configuration
+  // Essential wallets only - compact configuration with real logos
   const wallets = [
     {
       id: 'metamask',
       name: 'MetaMask',
-      icon: '🦊',
+      icon: '🦊', // MetaMask fox logo
       color: '#f6851b',
       detect: detectMetaMask
     },
     {
       id: 'trust',
       name: 'Trust Wallet', 
-      icon: '🛡️',
+      icon: 'trust-svg', // Will be rendered as TrustWalletIcon
       color: '#3375bb',
-      detect: () => typeof window.ethereum !== 'undefined' && window.ethereum.isTrust
+      detect: () => {
+        if (typeof window.ethereum === 'undefined') return false
+        if (window.ethereum.isTrust) return true
+        // Check for Trust Wallet on mobile
+        if (isMobile() && window.ethereum && !window.ethereum.isMetaMask && !window.ethereum.isCoinbaseWallet) {
+          return true // Could be Trust Wallet
+        }
+        return false
+      }
     },
     {
       id: 'coinbase',
       name: 'Coinbase',
-      icon: '🔵', 
+      icon: 'coinbase-svg', // Will be rendered as CoinbaseIcon
       color: '#0052ff',
-      detect: () => typeof window.ethereum !== 'undefined' && window.ethereum.isCoinbaseWallet
+      detect: () => {
+        if (typeof window.ethereum === 'undefined') return false
+        if (window.ethereum.isCoinbaseWallet) return true
+        // Additional check for Coinbase Wallet SDK
+        if (window.ethereum.isCoinbaseBrowser || window.coinbaseWalletExtension) return true
+        return false
+      }
     },
     {
       id: 'walletconnect',
       name: 'WalletConnect',
-      icon: '🔗',
+      icon: '📱', // Mobile/connection icon for WalletConnect
       color: '#3b99fc', 
       detect: () => true
     }
@@ -95,21 +130,43 @@ const WalletConnector = ({ onConnect, onDisconnect, currentWallet, account }) =>
         case 'metamask':
           if (!detectMetaMask()) {
             if (isMobile()) {
-              // On mobile, direct user to open in MetaMask app
+              // On mobile, try to open MetaMask app or fallback to install
               const currentUrl = window.location.href
               const metamaskUrl = `https://metamask.app.link/dapp/${window.location.host}${window.location.pathname}`
-              toast.error('Please open this page in the MetaMask mobile app')
+              
+              toast.success('Opening MetaMask app...', { duration: 2000 })
+              
+              // Try to open MetaMask app directly
+              window.location.href = metamaskUrl
+              
+              // Fallback after delay if app doesn't open
               setTimeout(() => {
-                window.open(metamaskUrl, '_blank')
-              }, 2000)
+                if (document.hasFocus()) {
+                  toast.error('MetaMask app not found. Please install MetaMask.')
+                  window.open('https://metamask.io/download/', '_blank')
+                }
+              }, 3000)
               return
             } else {
-              throw new Error('MetaMask not installed')
+              // Desktop - direct to install page
+              window.open('https://metamask.io/download/', '_blank')
+              toast.error('Please install MetaMask extension first')
+              return
             }
           }
-          await window.ethereum.request({ method: 'eth_requestAccounts' })
-          provider = new ethers.BrowserProvider(window.ethereum)
-          accounts = await provider.listAccounts()
+          
+          // Try to connect if detected
+          try {
+            await window.ethereum.request({ method: 'eth_requestAccounts' })
+            provider = new ethers.BrowserProvider(window.ethereum)
+            accounts = await provider.listAccounts()
+          } catch (error) {
+            if (error.code === 4001) {
+              toast.error('Connection cancelled by user')
+              return
+            }
+            throw error
+          }
           break
 
         case 'mobile-metamask':
@@ -144,20 +201,72 @@ const WalletConnector = ({ onConnect, onDisconnect, currentWallet, account }) =>
 
         case 'trust':
           if (!window.ethereum?.isTrust) {
-            throw new Error('Trust Wallet not installed')
+            if (isMobile()) {
+              // Try Trust Wallet deep link
+              const trustUrl = `https://link.trustwallet.com/open_url?coin_id=60&url=${encodeURIComponent(window.location.href)}`
+              toast.success('Opening Trust Wallet...', { duration: 2000 })
+              window.location.href = trustUrl
+              
+              setTimeout(() => {
+                if (document.hasFocus()) {
+                  toast.error('Trust Wallet not found. Please install Trust Wallet.')
+                  window.open('https://trustwallet.com/', '_blank')
+                }
+              }, 3000)
+              return
+            } else {
+              window.open('https://trustwallet.com/', '_blank')
+              toast.error('Please install Trust Wallet first')
+              return
+            }
           }
-          await window.ethereum.request({ method: 'eth_requestAccounts' })
-          provider = new ethers.BrowserProvider(window.ethereum)
-          accounts = await provider.listAccounts()
+          
+          try {
+            await window.ethereum.request({ method: 'eth_requestAccounts' })
+            provider = new ethers.BrowserProvider(window.ethereum)
+            accounts = await provider.listAccounts()
+          } catch (error) {
+            if (error.code === 4001) {
+              toast.error('Connection cancelled by user')
+              return
+            }
+            throw error
+          }
           break
 
         case 'coinbase':
           if (!window.ethereum?.isCoinbaseWallet) {
-            throw new Error('Coinbase Wallet not installed')
+            if (isMobile()) {
+              // Try Coinbase Wallet deep link
+              const coinbaseUrl = `https://go.cb-w.com/dapp?cb_url=${encodeURIComponent(window.location.href)}`
+              toast.success('Opening Coinbase Wallet...', { duration: 2000 })
+              window.location.href = coinbaseUrl
+              
+              setTimeout(() => {
+                if (document.hasFocus()) {
+                  toast.error('Coinbase Wallet not found. Please install Coinbase Wallet.')
+                  window.open('https://wallet.coinbase.com/', '_blank')
+                }
+              }, 3000)
+              return
+            } else {
+              window.open('https://wallet.coinbase.com/', '_blank')
+              toast.error('Please install Coinbase Wallet first')
+              return
+            }
           }
-          await window.ethereum.request({ method: 'eth_requestAccounts' })
-          provider = new ethers.BrowserProvider(window.ethereum)
-          accounts = await provider.listAccounts()
+          
+          try {
+            await window.ethereum.request({ method: 'eth_requestAccounts' })
+            provider = new ethers.BrowserProvider(window.ethereum)
+            accounts = await provider.listAccounts()
+          } catch (error) {
+            if (error.code === 4001) {
+              toast.error('Connection cancelled by user')
+              return
+            }
+            throw error
+          }
           break
 
         case 'walletconnect':
@@ -277,17 +386,22 @@ const WalletConnector = ({ onConnect, onDisconnect, currentWallet, account }) =>
               disabled={isConnecting}
               className="wallet-card"
               style={{
-                backgroundColor: isInstalled ? wallet.color + '10' : 'var(--surface-primary)',
-                border: `2px solid ${isInstalled ? wallet.color + '40' : 'var(--border-primary)'}`,
+                backgroundColor: wallet.color + '10',
+                border: `2px solid ${wallet.color + '40'}`,
                 opacity: isConnecting ? 0.7 : 1
               }}
             >
               <div className="wallet-icon" style={{ color: wallet.color }}>
-                {wallet.icon}
+                {wallet.icon === 'trust-svg' ? (
+                  <TrustWalletIcon size={32} />
+                ) : wallet.icon === 'coinbase-svg' ? (
+                  <CoinbaseIcon size={32} />
+                ) : (
+                  wallet.icon
+                )}
               </div>
               <div className="wallet-name">{wallet.name}</div>
               {isConnecting && <div className="loading-enhanced"></div>}
-              {!isInstalled && <div className="install-badge">Install</div>}
             </button>
           )
         })}
@@ -340,17 +454,6 @@ const WalletConnector = ({ onConnect, onDisconnect, currentWallet, account }) =>
           text-align: center;
         }
         
-        .install-badge {
-          position: absolute;
-          top: 8px;
-          right: 8px;
-          background: var(--warning-bg);
-          color: var(--warning-text);
-          font-size: 0.6875rem;
-          padding: 2px 6px;
-          border-radius: 10px;
-          font-weight: 600;
-        }
         
         .loading-enhanced {
           position: absolute;

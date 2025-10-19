@@ -31,22 +31,51 @@
     padding: 0 var(--space-2);
   }
 
-  /* Top Navigation */
+  /* Top Navigation - Mobile Fixes */
   .top-nav {
-    padding: var(--space-3);
-    flex-wrap: wrap;
-    gap: var(--space-2);
+    padding: var(--space-3) var(--space-4);
+    height: auto;
+    min-height: 64px;
+    flex-wrap: nowrap;
+    justify-content: space-between;
+    align-items: center;
   }
 
   .nav-brand {
-    order: 1;
+    flex: 0 0 auto;
   }
 
   .nav-actions {
-    order: 2;
+    flex: 0 0 auto;
     display: flex;
     gap: var(--space-2);
     align-items: center;
+    justify-content: flex-end;
+    flex-wrap: nowrap;
+  }
+  
+  /* Create Account Button Mobile */
+  .nav-actions .btn {
+    font-size: 0.625rem !important; /* Smaller text for mobile */
+    padding: var(--space-2) var(--space-2) !important; /* Tighter padding */
+    margin-right: var(--space-1) !important;
+    white-space: nowrap;
+    max-width: 80px; /* Prevent button from being too wide */
+    text-overflow: ellipsis;
+    overflow: hidden;
+  }
+  
+  /* Theme Toggle Mobile */
+  .theme-toggle {
+    width: 32px !important;
+    height: 32px !important;
+    padding: var(--space-1) !important;
+    flex-shrink: 0;
+  }
+  
+  .theme-toggle-icon {
+    width: 16px !important;
+    height: 16px !important;
   }
 
   /* Wallet Info Section */
