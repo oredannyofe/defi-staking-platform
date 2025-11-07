@@ -1,35 +1,40 @@
-# 🌌 BlaccManny DeFi Staking Platform
+# DeFi Staking Platform
 
 **Next-Generation DeFi Ecosystem** - A revolutionary decentralized finance platform featuring one-click wallet authentication, stunning cyberpunk UI with bright green Matrix-inspired design, comprehensive real-time analytics, and institutional-grade staking solutions optimized for both desktop and mobile experiences.
 
-[![GitHub Stars](https://img.shields.io/github/stars/blaccdante/defi-staking-platform?style=social)](https://github.com/blaccdante/defi-staking-platform/stargazers)
-[![GitHub Forks](https://img.shields.io/github/forks/blaccdante/defi-staking-platform?style=social)](https://github.com/blaccdante/defi-staking-platform/network/members)
-[![GitHub Issues](https://img.shields.io/github/issues/blaccdante/defi-staking-platform)](https://github.com/blaccdante/defi-staking-platform/issues)
-[![License](https://img.shields.io/github/license/blaccdante/defi-staking-platform)](https://github.com/blaccdante/defi-staking-platform/blob/main/LICENSE)
+[![GitHub Stars](https://img.shields.io/github/stars/oredannyofe/defi-staking-platform?style=social)](https://github.com/oredannyofe/defi-staking-platform/stargazers)
+[![GitHub Forks](https://img.shields.io/github/forks/oredannyofe/defi-staking-platform?style=social)](https://github.com/oredannyofe/defi-staking-platform/network/members)
+[![GitHub Issues](https://img.shields.io/github/issues/oredannyofe/defi-staking-platform)](https://github.com/oredannyofe/defi-staking-platform/issues)
+[![License](https://img.shields.io/github/license/oredannyofe/defi-staking-platform)](https://github.com/oredannyofe/defi-staking-platform/blob/main/LICENSE)
 
 ![DeFi Platform](https://img.shields.io/badge/DeFi-Next%20Generation-00ff41) ![React](https://img.shields.io/badge/React-18.2-61dafb) ![Solidity](https://img.shields.io/badge/Solidity-0.8.20-363636) ![Firebase](https://img.shields.io/badge/Firebase-12.3-ffca28) ![Mobile](https://img.shields.io/badge/Mobile-Optimized-00ff88)
 
 ## 🎯 Latest Screenshots & Features
 
-### 🚀 Revolutionary Futuristic Interface
-![Futuristic Main Interface](images/screenshots/futuristic-theme-main.png)
-*Cutting-edge cyberpunk design with Matrix-inspired bright green aesthetics and holographic effects*
+### Home screen
+![Home screen](images/screenshots/home-screen.png)
+- Landing view showing wallet connect and primary navigation.
+- Neon green theme with high-contrast typography.
 
-### ⚡ One-Click Wallet Authentication  
-![Instant Wallet Connection](images/screenshots/wallet-connection-new.png)
-*Streamlined wallet connection - no signup required! Support for MetaMask, Trust Wallet, Coinbase, and WalletConnect*
+### Wallet connection
+![Wallet connection](images/screenshots/wallet-connection.png)
+- One-click connect: MetaMask, Trust Wallet, Coinbase, WalletConnect.
+- Clear status and error handling.
 
-### 🌈 Ultra-Bright Green Cyberpunk Dashboard
-![Cyberpunk Dashboard](images/screenshots/dashboard-cyberpunk.png)
-*Eye-catching neon green interface with perfect visibility and professional design*
+### Dashboard
+![Dashboard](images/screenshots/dashboard.png)
+- Portfolio overview, staking status, and quick actions.
+- Responsive layout and keyboard/touch friendly controls.
 
-### 📊 Real-Time Market Data with Bright Green Theme
-![Market Data Display](images/screenshots/market-data-bright-green.png)
-*Crystal-clear market statistics with ultra-bright green colors for maximum visibility*
+### Market data
+![Market data](images/screenshots/market-data.png)
+- Live prices and key stats sourced from CoinGecko.
+- Bright green highlights for important metrics.
 
-### 📱 Perfect Mobile Experience
-![Mobile Responsive Design](images/screenshots/mobile-responsive.png)
-*Flawless mobile optimization with touch-friendly interfaces and responsive design*
+### Mobile
+![Mobile](images/screenshots/mobile.png)
+- Optimized for small screens with touch-first navigation.
+- Adaptive components and accessible contrast.
 
 ## 🎆 Latest Revolutionary Features
 
@@ -141,7 +146,7 @@
 
 ### 1. Clone and Install
 ```bash
-git clone https://github.com/blaccdante/defi-staking-platform.git
+git clone https://github.com/oredannyofe/defi-staking-platform.git
 cd defi-staking-platform
 npm install
 ```
